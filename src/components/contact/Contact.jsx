@@ -11,26 +11,6 @@ import {
 import Address from "./Address";
 import Form from "./Form";
 import SocialMedia from "../common/socialMedia/SocialMedia";
-import api from "../../../axiosInstance";
-import { useState, useEffect } from "react";
-
-const addressData = [
-  {
-    icon: faLocationDot,
-    title: "Address",
-    description: "New Mexico, 31134",
-  },
-  {
-    icon: faEnvelope,
-    title: "My Email",
-    description: "mymail@mail.com",
-  },
-  {
-    icon: faPhone,
-    title: "Call Me Now",
-    description: "00-123 00000",
-  },
-];
 
 const iconMap = {
   address: faLocationDot,
@@ -41,26 +21,7 @@ const iconMap = {
   linkedin: faLinkedin,
 };
 
-const Contact = () => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    api
-      .get("/contact")
-      .then((res) => {
-        setData(res.data.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+const Contact = ({ data }) => {
   return (
     <div className="relative -bottom-15 -mt-15 z-10 px-2">
       <div

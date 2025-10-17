@@ -19,7 +19,7 @@ const Footer = () => {
         <a href="#" className="flex items-center border-0">
           <img src={logo} className="h-8 sm:h-14 rounded-2xl" alt="logo" />
           <p className="text-3xl sm:text-[32px] my-auto ms-[12px] font-semibold">
-            Brooklyn
+            Gilang
           </p>
         </a>
         <div className="mx-7 max-md:my-7 text-center">

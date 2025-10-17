@@ -1,48 +1,8 @@
 import person from "../../assets/images/person.png";
 import "./introduction.css";
 import InformationSummary from "./InformationSummary";
-import api from "../../../axiosInstance";
-import { useState, useEffect } from "react";
 
-// Information summary data
-const informationSummaryData = [
-  {
-    id: 1,
-    title: "Experience",
-    description: "15 Y.",
-  },
-  {
-    id: 2,
-    title: "Projects Completed",
-    description: "250+",
-  },
-  {
-    id: 3,
-    title: "Happy Clients",
-    description: "58",
-  },
-];
-
-const Introduction = () => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    api
-      .get("/home")
-      .then((res) => {
-        setData(res.data.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+const Introduction = ({ data }) => {
   return (
     <div
       className="flex max-lg:flex-col-reverse sm:justify-between pt-10 lg:pt-31.5 lg:mb-27.5 max-xl:gap-2 p-2 max-xxl:px-4"

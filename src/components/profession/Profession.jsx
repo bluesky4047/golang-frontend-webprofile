@@ -1,48 +1,6 @@
 import Roles from "./Roles";
-import api from "../../../axiosInstance";
-import { useState, useEffect } from "react";
 
-const rolesData = [
-  {
-    id: 1,
-    title: "User Experience (UX)",
-    description:
-      "I design intuitive and enjoyable experiences by understanding user needs, conducting research, and creating wireframes and prototypes that enhance usability.",
-  },
-  {
-    id: 2,
-    title: "User Interface (UI)",
-    description:
-      "I craft visually appealing and consistent interfaces, focusing on layout, color, and typography to ensure a seamless and engaging user journey.",
-  },
-  {
-    id: 3,
-    title: "Web Development",
-    description:
-      "I build responsive and high-performance web applications using modern technologies, ensuring accessibility, scalability, and maintainability.",
-  },
-];
-
-const Profession = () => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    api
-      .get("/services")
-      .then((res) => {
-        setData(res.data.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+const Profession = ({ data }) => {
   return (
     <div
       className="content grid md:grid-cols-2 max-xxl:px-4 xxl:px-2 py-10 md:py-15 lg:py-37.5"
