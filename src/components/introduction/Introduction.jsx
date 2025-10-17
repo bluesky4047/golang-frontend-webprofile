@@ -81,7 +81,7 @@ const Introduction = () => {
       >
         <img
           className={`shadow-2xl shadow-gray-200 w-full h-full absolute bottom-0 object-cover bg-white rounded-3xl`}
-          src={person}
+          src={import.meta.env.VITE_BASE_URL + data.img}
           alt="person"
         />
       </div>
