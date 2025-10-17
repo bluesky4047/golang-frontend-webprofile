@@ -6,6 +6,8 @@ import "swiper/css/pagination";
 import { EffectFade, Navigation, Pagination } from "swiper/modules";
 import TestimonialTemplate from "./TestimonialTemplate";
 import "./testimonial.css";
+import api from "../../../axiosInstance";
+import { useState, useEffect } from "react";
 
 const testimonialData = [
   {
@@ -32,6 +34,25 @@ const testimonialData = [
 ];
 
 const Testimonial = () => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    api
+      .get("/testimonials")
+      .then((res) => {
+        setData(res.data.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
   return (
     <div className="flex mx-auto justify-center px-2 max-w-218 pb-10 md:pb-25">
       <div className="w-full h-full cursor-grab">
@@ -45,7 +66,7 @@ const Testimonial = () => {
           }}
           modules={[EffectFade, Navigation, Pagination]}
         >
-          {testimonialData.map((testimonial, index) => (
+          {data.testimonials.map((testimonial, index) => (
             <SwiperSlide key={index}>
               <TestimonialTemplate testimonial={testimonial} />
             </SwiperSlide>
