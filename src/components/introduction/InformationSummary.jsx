@@ -5,12 +5,12 @@ const InformationSummary = ({ item }) => {
         <p
           className={`text-[16px] xxs:text-[18px] sm:text-[32px] font-semibold text-gray-700`}
         >
-          {item.description}
+          {item.value}
         </p>
         <p
           className={`text-[8px] xxs:text-[9px] sm:text-[16px] font-normal px-[0.90rem] sm:px-[1rem] text-wrap text-gray-500`}
         >
-          {item.title}
+          {item.name}
         </p>
       </div>
     </div>
