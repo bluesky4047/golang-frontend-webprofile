@@ -1,3 +1,6 @@
+import { useState } from "react";
+import api from "../../../axiosInstance"; // pastikan path ini sesuai
+
 const telegramSVG = (
   <svg
     className="w-4 md:w-6 aspect-square"
@@ -16,6 +19,43 @@ const commonClass =
   "input input-lg border-0 border-b-2 focus:outline-none focus:placeholder:text-picto-primary placeholder:text-[15px] md:placeholder:text-lg focus:border-picto-primary border-[#E6E8EB] w-full rounded-none px-0";
 
 const Form = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    location: "",
+    budget: "",
+    subject: "",
+    message: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await api.post("/contact", formData);
+      alert("✅ Message sent successfully!");
+      setFormData({
+        name: "",
+        email: "",
+        location: "",
+        budget: "",
+        subject: "",
+        message: "",
+      });
+      console.log("Server response:", res.data);
+    } catch (err) {
+      console.error(err);
+      alert("❌ Failed to send message");
+    }
+  };
+
   return (
     <div>
       <p className="text-[12px] xs:text-[14px] max-lg:text-center sm:text-lg font-normal text-soft-dark">
@@ -23,47 +63,66 @@ const Form = () => {
         opportunities.
       </p>
       <div className="mx-2">
-        <form className="flex flex-col gap-4 mt-4">
+        <form className="flex flex-col gap-4 mt-4" onSubmit={handleSubmit}>
           <input
             type="text"
+            name="name"
             placeholder="Name*"
-            className={`${commonClass}`}
+            className={commonClass}
+            value={formData.name}
+            onChange={handleChange}
             required
           />
           <input
             type="email"
+            name="email"
             placeholder="Email*"
-            className={`${commonClass}`}
+            className={commonClass}
+            value={formData.email}
+            onChange={handleChange}
             required
           />
           <input
             type="text"
+            name="location"
             placeholder="Location*"
-            className={`${commonClass}`}
+            className={commonClass}
+            value={formData.location}
+            onChange={handleChange}
             required
           />
 
           <div className="flex max-xs:flex-col max-xs:gap-4">
             <input
               type="text"
+              name="budget"
               placeholder="Budget*"
               className={`${commonClass} xs:w-[50%] me-5`}
+              value={formData.budget}
+              onChange={handleChange}
               required
             />
             <input
               type="text"
+              name="subject"
               placeholder="Subject*"
-              className={`${commonClass}`}
+              className={commonClass}
+              value={formData.subject}
+              onChange={handleChange}
               required
             />
           </div>
 
           <input
             type="text"
+            name="message"
             placeholder="Message*"
-            className={`${commonClass}`}
+            className={commonClass}
+            value={formData.message}
+            onChange={handleChange}
             required
           />
+
           <button
             type="submit"
             className="btn gap-3 max-lg:mx-auto btn-primary rounded-sm mt-5 text-[13px] md:text-[16px] w-fit font-semibold lg:mt-12.5 p-2 md:px-4"

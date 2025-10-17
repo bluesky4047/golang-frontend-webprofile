@@ -3,9 +3,16 @@ import {
   faLocationDot,
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFacebookF,
+  faInstagram,
+  faLinkedin,
+} from "@fortawesome/free-brands-svg-icons";
 import Address from "./Address";
 import Form from "./Form";
 import SocialMedia from "../common/socialMedia/SocialMedia";
+import api from "../../../axiosInstance";
+import { useState, useEffect } from "react";
 
 const addressData = [
   {
@@ -25,7 +32,35 @@ const addressData = [
   },
 ];
 
+const iconMap = {
+  address: faLocationDot,
+  "my email": faEnvelope,
+  "call me now": faPhone,
+  facebook: faFacebookF,
+  instagram: faInstagram,
+  linkedin: faLinkedin,
+};
+
 const Contact = () => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    api
+      .get("/contact")
+      .then((res) => {
+        setData(res.data.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
   return (
     <div className="relative -bottom-15 -mt-15 z-10 px-2">
       <div
@@ -36,20 +71,45 @@ const Contact = () => {
           <div>
             <div>
               <p className="text-[35px] max-lg:hidden font-semibold text-nowrap text-[#132238]">
-                Let’s discuss your Project
+                {data.title}
               </p>
               <p className="text-[12px] xs:text-[14px] sm:text-lg md:text-lg max-lg:text-center pt-4 font-normal text-soft-dark">
-                I'm available for freelance work. Drop me a line if you have a
-                project you think I'd be a good fit for.
+                {data.description}
               </p>
             </div>
             <div className="my-8.75 sm:max-lg:flex justify-between items-center">
-              {addressData.map((item, index) => (
-                <Address item={item} key={index} />
-              ))}
+              {data.details
+                .filter((item) =>
+                  ["address", "my email", "call me now"].includes(
+                    item.name.toLowerCase().replace(":", "")
+                  )
+                )
+                .map((item, index) => {
+                  const key = item.name.replace(":", "").toLowerCase();
+                  const addressItem = {
+                    title: item.name.replace(":", ""),
+                    description: item.description,
+                    icon: iconMap[key] || faLocationDot,
+                  };
+
+                  return <Address item={addressItem} key={index} />;
+                })}
             </div>
             <div className="w-full max-lg:text-center max-md:mb-4">
-              <SocialMedia />
+              <SocialMedia
+                links={data.details
+                  // ambil hanya social media
+                  .filter((item) =>
+                    ["facebook", "instagram", "linkedin"].includes(
+                      item.name.toLowerCase().replace(":", "")
+                    )
+                  )
+                  // ubah field description → value
+                  .map((item) => ({
+                    name: item.name.replace(":", ""),
+                    value: item.description,
+                  }))}
+              />
             </div>
           </div>
           <div className="w-full overflow-y-scroll py-6.5">
