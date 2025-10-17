@@ -6,6 +6,9 @@ import card4 from "../../assets/images/portfolio-images/card-4.png";
 import card5 from "../../assets/images/portfolio-images/card-5.png";
 import card6 from "../../assets/images/portfolio-images/card-6.png";
 
+import api from "../../../axiosInstance";
+import { useState, useEffect } from "react";
+
 const projectData = [
   {
     id: 1,
@@ -64,6 +67,25 @@ const projectData = [
 ];
 
 const Portfolio = () => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    api
+      .get("/portfolio")
+      .then((res) => {
+        setData(res.data.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
   return (
     <div
       className="content mt-10 md:mt-15 xl:mt-25 mb-10 md:mb-25 max-xxl:p-2"
@@ -80,7 +102,7 @@ const Portfolio = () => {
       </div>
       <div className="mx-auto flex justify-center">
         <div className="grid xl:grid-cols-3 md:grid-cols-2 gap-6">
-          {projectData.map((data, index) => (
+          {data.portfolio.map((data, index) => (
             <Projects data={data} key={index} />
           ))}
         </div>
