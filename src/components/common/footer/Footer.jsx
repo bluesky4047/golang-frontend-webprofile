@@ -4,9 +4,9 @@ import logo from "../../../assets/logo.png";
 const navItems = [
   { id: 1, name: "Home", url: "Home" },
   { id: 2, name: "About", url: "About" },
-  { id: 3, name: "Process", url: "Process" },
+  // { id: 3, name: "Process", url: "Process" },
   { id: 4, name: "Portfolio", url: "Portfolio" },
-  { id: 5, name: "Blog", url: "Blog" },
+  // { id: 5, name: "Blog", url: "Blog" },
   { id: 6, name: "Services", url: "Services" },
   { id: 7, name: "Contact", url: "Contact" },
 ];
