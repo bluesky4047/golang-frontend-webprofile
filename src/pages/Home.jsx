@@ -69,7 +69,7 @@ const Home = () => {
   if (loading)
     return (
       <div className="flex justify-center items-center h-screen">
-        <p className="text-lg font-semibold text-gray-700">Loading...</p>
+        <p className="text-lg font-semibold text-gray-700"></p>
       </div>
     );
 
